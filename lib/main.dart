@@ -129,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       final snacks = docs[index];
                       final s = snacks.data();
 
+                      // TEST
                       InkWell(
                         onTap: () {
                           Navigator.push(
