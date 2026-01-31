@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309867412291",
+    "project_id": "w4-firebase",
+    "storage_bucket": "w4-firebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309867412291:android:67d2538751bcc35d200df6",
+        "android_client_info": {
+          "package_name": "com.example.w4_30_takdanai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1KvaAPfHZCDaEF6yfYCXMB7b-kZ_DBNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
