@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
                         final snacks = docs[index];
-                        // ดึงข้อมูล
+                        // ข้อมูล
                         final s = snacks.data();
 
                         return InkWell(
@@ -273,17 +273,16 @@ class SnackDetailPage extends StatelessWidget {
                   SizedBox(height: 15),
 
                   Text("Category", style: TextStyle(color: Colors.grey)),
-
                   SizedBox(height: 5),
-
-                  Text(snack["category"], style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600,)),
+                  Text(
+                    snack["category"],
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
 
                   SizedBox(height: 15),
 
                   Text("Price", style: TextStyle(color: Colors.grey)),
-
                   SizedBox(height: 5),
-
                   Text(
                     "${snack["price"]} ฿",
                     style: TextStyle(
