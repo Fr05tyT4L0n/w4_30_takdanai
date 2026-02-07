@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String _category = _snackCategoryCtrl.text;
     String _price = _snackPriceCtrl.text;
 
-    // เช็กข้อมูลไม่ครบถ้วน
+    // เช็กข้อมูลไม่ครบ
     if (_name.isEmpty || _category.isEmpty || _price.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -172,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
                         final snacks = docs[index];
+                        // ดึงข้อมูล
                         final s = snacks.data();
 
                         return InkWell(
@@ -195,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   s["name"],
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -205,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Category : ${s["category"]}",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -215,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Text(
                                   "Price : ${s["price"]} ฿",
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -243,39 +244,53 @@ class SnackDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(snack["name"]), centerTitle: true),
+      appBar: AppBar(
+        title: Text(snack["name"], style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(15), // เว้นขอบจอนิดเดียว
+        padding: EdgeInsets.all(15),
         child: Card(
           elevation: 6,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           child: SizedBox.expand(
-            // 👈 ทำให้ Card เต็มพื้นที่
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     snack["name"],
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    style: TextStyle(
+                      fontSize: 56,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 12),
+
+                  SizedBox(height: 15),
 
                   Text("Category", style: TextStyle(color: Colors.grey)),
-                  Text(snack["category"], style: TextStyle(fontSize: 16)),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 5),
+
+                  Text(snack["category"], style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600,)),
+
+                  SizedBox(height: 15),
 
                   Text("Price", style: TextStyle(color: Colors.grey)),
 
+                  SizedBox(height: 5),
+
                   Text(
-                    "฿${snack["price"]}",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    "${snack["price"]} ฿",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
                   ),
                 ],
               ),
