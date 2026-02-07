@@ -21,9 +21,16 @@ class MyApp extends StatelessWidget {
       title: 'Firebase',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.white54),
+        useMaterial3: false,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          // backgroundColor: Colors.black,
+          foregroundColor: Colors.black,
+          centerTitle: true,
+        ),
       ),
-      home: const MyHomePage(title: 'Home Page'),
+      home: const MyHomePage(title: 'Store Management'),
     );
   }
 }
@@ -47,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String _category = _snackCategoryCtrl.text;
     String _price = _snackPriceCtrl.text;
 
-    // Check if data is empty
+    // เช็กข้อมูลไม่ครบถ้วน
     if (_name.isEmpty || _category.isEmpty || _price.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -83,70 +90,146 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: "Name"),
-              controller: _snackNameCtrl,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Category"),
-              controller: _snackCategoryCtrl,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Price"),
-              controller: _snackPriceCtrl,
-            ),
-
-            ElevatedButton(onPressed: () => addSnack(), child: Text("Save")),
-
-            // ขยายให้เต็มหน้าจอ
-            Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("snacks")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  // สถานะรอข้อมูลเป็นยังไง
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (snapshot.hasError) {
-                    return Center(child: Text(snapshot.error.toString()));
-                  }
-
-                  final docs = snapshot.data!.docs;
-
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: docs.length,
-                    itemBuilder: (context, index) {
-                      final snacks = docs[index];
-                      final s = snacks.data();
-
-                      // TEST
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => SnackDetailPage(snack: s),
-                            ),
-                          );
-                        },
-                        child: Card(child: Text(s["name"])),
-                      );
-                    },
-                  );
-                },
+        child: Container(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  prefixIcon: Icon(Icons.new_label),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                controller: _snackNameCtrl,
               ),
-            ),
-          ],
+
+              SizedBox(height: 8),
+
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Category",
+                  prefixIcon: Icon(Icons.category),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                controller: _snackCategoryCtrl,
+              ),
+
+              SizedBox(height: 8),
+
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Price",
+                  prefixIcon: Icon(Icons.price_change),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                controller: _snackPriceCtrl,
+              ),
+
+              SizedBox(height: 15),
+
+              SizedBox(
+                width: double.infinity,
+                height: 42,
+                child: ElevatedButton(
+                  onPressed: () => addSnack(),
+                  child: Text("Save", style: TextStyle(fontSize: 20)),
+                ),
+              ),
+
+              SizedBox(height: 15),
+
+              // ขยายให้เต็มหน้าจอ
+              Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("snacks")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    // สถานะรอข้อมูล
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    // เช็ค error
+                    if (snapshot.hasError) {
+                      return Center(child: Text(snapshot.error.toString()));
+                    }
+
+                    final docs = snapshot.data!.docs;
+
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+
+                      itemCount: docs.length,
+                      itemBuilder: (context, index) {
+                        final snacks = docs[index];
+                        final s = snacks.data();
+
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SnackDetailPage(snack: s),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  s["name"],
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                                SizedBox(height: 6),
+
+                                Text(
+                                  "Category : ${s["category"]}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+
+                                SizedBox(height: 6),
+
+                                Text(
+                                  "Price : ${s["price"]} ฿",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -160,13 +243,46 @@ class SnackDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            children: [
-              Text(snack["name"]),
-              Text(snack["category"]),
-              Text(snack["price"]),
-            ]
-        )
+      appBar: AppBar(title: Text(snack["name"]), centerTitle: true),
+      body: Padding(
+        padding: const EdgeInsets.all(15), // เว้นขอบจอนิดเดียว
+        child: Card(
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: SizedBox.expand(
+            // 👈 ทำให้ Card เต็มพื้นที่
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    snack["name"],
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  Text("Category", style: TextStyle(color: Colors.grey)),
+                  Text(snack["category"], style: TextStyle(fontSize: 16)),
+
+                  const SizedBox(height: 20),
+
+                  Text("Price", style: TextStyle(color: Colors.grey)),
+
+                  Text(
+                    "฿${snack["price"]}",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
