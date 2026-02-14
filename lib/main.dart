@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      home: const MyHomePage(title: 'Store Management'),
+      home: const MyHomePage(title: 'Products Management'),
     );
   }
 }
@@ -245,7 +245,9 @@ class SnackDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(snack["name"], style: TextStyle(color: Colors.white)),
+        // title: Text(snack["name"], style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("Product", style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
       body: Padding(
